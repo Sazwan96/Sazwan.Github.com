@@ -1,0 +1,400 @@
+# 🚀 Proyek AIoT Siap Pakai – Panduan Lengkap
+
+Anda telah mempelajari banyak komponen: **Firebase, Project IDX, WebRTC, ESP32, Docker, GitHub Actions, Dependabot, Lisensi MIT, dan masih banyak lagi**. Sekarang saatnya menyatukan semuanya menjadi satu kesatuan yang utuh. Berikut adalah **struktur proyek lengkap** yang dapat Anda gunakan sebagai titik awal untuk membangun sistem AIoT (AI + IoT) Anda.
+
+---
+
+## 📁 Struktur Direktori Proyek
+
+```
+sazwan-aiot-platform/
+├── .github/
+│   ├── workflows/
+│   │   ├── docker-image.yml          # Build & push Docker image
+│   │   ├── auto-merge.yml            # Auto-merge Dependabot PRs
+│   │   └── ci.yml                     # Continuous integration (test)
+│   └── dependabot.yml                 # Dependabot configuration
+├── .idx/
+│   └── dev.nix                         # Project IDX environment config
+├── esp32-firmware/                      # Kode untuk ESP32
+│   ├── src/
+│   │   ├── main.cpp
+│   │   ├── wifi_manager.h
+│   │   ├── firebase_manager.h
+│   │   ├── sensor_manager.h
+│   │   ├── actuator_manager.h
+│   │   └── camera_manager.h
+│   ├── platformio.ini                   # Konfigurasi PlatformIO
+│   └── README.md
+├── mobile-app/                           # Aplikasi mobile (React Native)
+│   ├── src/
+│   │   ├── screens/
+│   │   ├── components/
+│   │   ├── services/
+│   │   │   ├── firebase.js
+│   │   │   └── webrtc.js
+│   │   └── App.js
+│   ├── package.json
+│   ├── app.json
+│   └── README.md
+├── cloud-functions/                       # Firebase Cloud Functions
+│   ├── index.js
+│   ├── package.json
+│   └── .eslintrc.js
+├── ai-service/                             # Microservice AI (Docker)
+│   ├── app/
+│   │   ├── main.py
+│   │   └── requirements.txt
+│   ├── Dockerfile
+│   └── .dockerignore
+├── web-dashboard/                          # Dashboard web (opsional)
+│   ├── public/
+│   ├── src/
+│   ├── package.json
+│   └── README.md
+├── firebase.json                           # Firebase project config
+├── .firebaserc                              # Alias Firebase project
+├── LICENSE                                   # MIT License (2026)
+├── README.md                                 # Dokumentasi utama
+└── .gitignore
+```
+
+---
+
+## 🛠️ 1. **Firebase Configuration** (`firebase.json` dan `.firebaserc`)
+
+### `firebase.json`
+```json
+{
+  "functions": {
+    "source": "cloud-functions",
+    "runtime": "nodejs20"
+  },
+  "hosting": {
+    "public": "web-dashboard/build",
+    "ignore": [
+      "firebase.json",
+      "**/.*",
+      "**/node_modules/**"
+    ],
+    "rewrites": [
+      {
+        "source": "**",
+        "destination": "/index.html"
+      }
+    ]
+  },
+  "emulators": {
+    "auth": {
+      "port": 9099
+    },
+    "functions": {
+      "port": 5001
+    },
+    "firestore": {
+      "port": 8080
+    },
+    "storage": {
+      "port": 9199
+    },
+    "ui": {
+      "enabled": true,
+      "port": 4000
+    },
+    "singleProjectMode": true
+  }
+}
+```
+
+### `.firebaserc`
+```json
+{
+  "projects": {
+    "default": "sazwan-aiot-platform"
+  }
+}
+```
+
+---
+
+## 🧠 2. **Project IDX Environment** (`.idx/dev.nix`)
+
+```nix
+{ pkgs, ... }: {
+  channel = "stable-23.11";
+  packages = [
+    pkgs.nodejs_20
+    pkgs.nodePackages.firebase-tools
+    pkgs.google-cloud-sdk
+    pkgs.git
+    pkgs.docker
+    pkgs.docker-compose
+    pkgs.platformio   # untuk ESP32
+  ];
+  env = {
+    FIREBASE_PROJECT = "sazwan-aiot-platform";
+    NODE_ENV = "development";
+  };
+  idx.extensions = [
+    "googlecloudtools.firebase-dataconnect-vscode"
+    "ms-azuretools.vscode-docker"
+    "platformio.platformio-ide"
+    "esbenp.prettier-vscode"
+  ];
+  idx.previews = {
+    enable = true;
+    previews = {
+      web = {
+        command = [
+          "npm" "run" "dev" "--" "--port" "$PORT" "--host" "0.0.0.0"
+        ];
+        manager = "web";
+        env = {
+          PORT = "3000";
+          FIREBASE_AUTH_EMULATOR_HOST = "localhost:9099";
+          FIRESTORE_EMULATOR_HOST = "localhost:8080";
+        };
+      };
+    };
+  };
+  services = {
+    firebase = {
+      emulators = {
+        enabled = true;
+        ports = {
+          auth = 9099;
+          firestore = 8080;
+          functions = 5001;
+          storage = 9199;
+          ui = 4000;
+        };
+      };
+    };
+    postgres = {
+      enable = true;
+      initialData = {
+        databases = [{ name = "firebase_dataconnect"; }];
+      };
+    };
+  };
+}
+```
+
+---
+
+## 🐳 3. **Docker & GitHub Actions**
+
+### `ai-service/Dockerfile`
+```dockerfile
+FROM python:3.11-slim
+
+WORKDIR /app
+
+COPY requirements.txt .
+RUN pip install --no-cache-dir -r requirements.txt
+
+COPY app/ .
+
+CMD ["uvicorn", "main:app", "--host", "0.0.0.0", "--port", "8080"]
+```
+
+### `ai-service/app/requirements.txt`
+```
+fastapi
+uvicorn
+google-cloud-vision
+google-generativeai
+firebase-admin
+python-multipart
+```
+
+### `.github/workflows/docker-image.yml`
+```yaml
+name: Build and Push Docker Image
+
+on:
+  push:
+    branches: [ main ]
+    tags: [ 'v*' ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      packages: write
+    steps:
+      - uses: actions/checkout@v4
+      - uses: docker/setup-buildx-action@v3
+      - uses: docker/login-action@v3
+        with:
+          username: ${{ secrets.DOCKER_USERNAME }}
+          password: ${{ secrets.DOCKER_PASSWORD }}
+      - uses: docker/metadata-action@v5
+        id: meta
+        with:
+          images: docker.io/${{ github.repository }}
+          tags: |
+            type=ref,event=branch
+            type=semver,pattern={{version}}
+            type=sha
+      - uses: docker/build-push-action@v5
+        with:
+          context: ./ai-service
+          push: true
+          tags: ${{ steps.meta.outputs.tags }}
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
+```
+
+---
+
+## 🤖 4. **Dependabot** (`.github/dependabot.yml`)
+
+```yaml
+version: 2
+updates:
+  - package-ecosystem: "npm"
+    directory: "/mobile-app"
+    schedule:
+      interval: "weekly"
+    labels: ["dependencies", "javascript"]
+
+  - package-ecosystem: "pip"
+    directory: "/ai-service"
+    schedule:
+      interval: "weekly"
+    labels: ["dependencies", "python"]
+
+  - package-ecosystem: "docker"
+    directory: "/ai-service"
+    schedule:
+      interval: "monthly"
+
+  - package-ecosystem: "github-actions"
+    directory: "/"
+    schedule:
+      interval: "weekly"
+```
+
+---
+
+## 📜 5. **MIT License** (`LICENSE`)
+
+```
+MIT License
+
+Copyright (c) 2026 Muhamad Sazwan Bin Ismail
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
+```
+
+---
+
+## 📘 6. **README.md Utama**
+
+```markdown
+# Sazwan AIoT Platform
+
+Platform terintegrasi untuk **AI + IoT** menggunakan Firebase, ESP32, WebRTC, dan Docker.
+
+## Fitur Utama
+- 📡 ESP32 dengan sensor (DHT22, PIR, LDR, ultrasonic) dan aktuator (LED, relay).
+- ☁️ Firebase Realtime Database, Storage, Authentication, dan Cloud Functions.
+- 📱 Aplikasi mobile (React Native) dengan kontrol real-time dan WebRTC live streaming.
+- 🧠 AI on-device (ML Kit) dan cloud (Gemini, Vision API).
+- 🐳 Microservice AI dalam Docker, otomatis build via GitHub Actions.
+- 🔒 Dependabot untuk update keamanan.
+- 🖥️ Project IDX untuk development cloud.
+
+## Mulai Cepat
+1. Clone repositori ini.
+2. Setup Firebase project dan aktifkan layanan.
+3. Konfigurasi environment di `.idx/dev.nix`.
+4. Jalankan emulator: `firebase emulators:start`.
+5. Upload firmware ke ESP32 (folder `esp32-firmware/`).
+6. Jalankan mobile app: `cd mobile-app && npm install && npm start`.
+7. Deploy cloud functions: `firebase deploy --only functions`.
+8. Build dan push Docker image: `docker build -t your-image ./ai-service`.
+
+## Lisensi
+MIT © 2026 Muhamad Sazwan Bin Ismail
+```
+
+---
+
+## 🚀 Cara Menjalankan Semua Komponen
+
+### A. Di Project IDX
+1. Buat workspace baru di [idx.dev](https://idx.dev) dan pilih "Import repository" dengan URL repositori ini.
+2. Buka terminal, jalankan:
+   ```bash
+   firebase login
+   firebase use --add
+   ```
+3. Jalankan emulator:
+   ```bash
+   firebase emulators:start
+   ```
+4. Preview aplikasi web melalui panel IDX.
+
+### B. ESP32
+1. Buka folder `esp32-firmware` di PlatformIO (VS Code + PlatformIO plugin).
+2. Sesuaikan kredensial WiFi dan Firebase di `src/wifi_manager.h` dan `src/firebase_manager.h`.
+3. Upload ke board ESP32.
+
+### C. Mobile App
+1. Di terminal, masuk ke `mobile-app/`.
+2. Install dependencies: `npm install`.
+3. Jalankan: `npm start` (untuk Expo) atau `npx react-native run-android/ios`.
+
+### D. AI Microservice
+1. Build Docker image:
+   ```bash
+   docker build -t sazwan-ai-service ./ai-service
+   ```
+2. Jalankan secara lokal:
+   ```bash
+   docker run -p 8080:8080 sazwan-ai-service
+   ```
+
+---
+
+## ✅ Checklist Penyelesaian
+
+| Komponen | Status |
+|----------|--------|
+| Firebase project & konfigurasi | ✅ Siap |
+| Project IDX environment | ✅ Siap |
+| ESP32 firmware dasar | ✅ Siap |
+| Mobile app (React Native) | ✅ Siap |
+| Cloud Functions | ✅ Siap |
+| AI microservice (Docker) | ✅ Siap |
+| GitHub Actions CI/CD | ✅ Siap |
+| Dependabot | ✅ Siap |
+| Lisensi MIT | ✅ Siap |
+| Dokumentasi | ✅ Siap |
+
+---
+
+## 🎉 Selamat! Proyek Anda Telah Siap
+
+Anda sekarang memiliki **kerangka kerja lengkap** untuk mengembangkan sistem AIoT dengan teknologi terbaru. Setiap komponen dapat dikembangkan lebih lanjut sesuai kebutuhan. Jika ada pertanyaan lebih lanjut atau butuh bantuan pada bagian tertentu, jangan ragu untuk bertanya.
+
+**Siap untuk melangkah ke fase berikutnya?** 🚀
