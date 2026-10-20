@@ -1,0 +1,256 @@
+I'll retrieve information about that MIT LICENSE file for you.Perfect! I've retrieved the **MIT LICENSE** file from your repository. Here's what I found:
+
+## Summary
+
+The file at `Sazwan96/Sazwan.Github.com` contains a comprehensive **AIoT (AI + IoT) project guide** rather than a traditional MIT License. However, it **does include** the actual MIT License text (lines 282-306).
+
+### Key Contents:
+
+**📋 What's in the file:**
+1. **Complete project structure** for a Sazwan AIoT Platform with:
+   - ESP32 firmware development
+   - React Native mobile app
+   - Firebase Cloud Functions
+   - Docker-based AI microservice
+   - GitHub Actions CI/CD
+   - Project IDX environment setup
+
+2. **Actual MIT License (lines 282-306):**
+   - Copyright: © 2026 Muhamad Sazwan Bin Ismail
+   - Standard MIT terms (permissions, conditions, limitations)
+
+3. **Additional documentation:**
+   - Firebase configuration examples
+   - Dependabot setup
+   - Detailed project structure
+   - Quick start instructions
+   - Completion checklist
+
+### Current Status:
+- **Repository:** Sazwan96/Sazwan.Github.com
+- **Latest commit:** `1f3bf928e50ec1bc64f7167bd651b25a31f80eb6`
+- **Blob SHA:** `fba1a52c125926bc0214f58cc1a7c098fd595fd6`
+
+**What would you like to do next?** For example:
+- Edit or update the license information?
+- Review specific sections of the documentation?
+- Make changes to the file?I'll retrieve the specific commit history and blame information for that file at that commit.Perfect! I've retrieved the MIT LICENSE file from the specific commit `0a4743ac48c3c98c503cf15e38e6a0a4d506c739`.
+
+## File Details at Commit 0a4743ac48c3c98c503cf15e38e6a0a4d506c739
+
+**Repository:** Sazwan96/Sazwan.Github.com  
+**File:** MIT LICENSE  
+**Commit OID:** 0a4743ac48c3c98c503cf15e38e6a0a4d506c739  
+**Blob SHA:** fba1a52c125926bc0214f58cc1a7c098fd595fd6  
+
+### File Contents:
+
+The file is a comprehensive **AIoT Project Documentation** (401 lines) written in Indonesian, containing:
+
+**Main Sections:**
+1. **Project Overview** - Proyek AIoT Siap Pakai (Complete AIoT Project)
+2. **Directory Structure** - Complete folder layout for the sazwan-aiot-platform
+3. **Firebase Configuration** - firebase.json and .firebaserc examples
+4. **Project IDX Environment** - .idx/dev.nix setup
+5. **Docker & GitHub Actions** - Dockerfile and CI/CD workflows
+6. **Dependabot Configuration** - Automated dependency management
+7. **MIT License** (lines 282-306) - Copyright © 2026 Muhamad Sazwan Bin Ismail
+8. **Main README** - Quick start guide
+9. **Execution Instructions** - How to run all components
+10. **Completion Checklist** - ✅ All items marked as ready
+
+### Key Information:
+- **Copyright Year:** 2026
+- **Copyright Holder:** Muhamad Sazwan Bin Ismail
+- **License Type:** MIT
+- **File has remained unchanged** across the commits (same Blob SHA)
+
+---
+
+**What would you like to do next?** Would you like to:
+- Update or modify the MIT LICENSE file?
+- View the commit history/blame for specific lines?
+- Make changes to any part of the project documentation?Perfect! I've retrieved the complete data from the MIT LICENSE file. Here's a comprehensive summary:
+
+## 📊 Complete File Data - MIT LICENSE
+
+**Repository:** Sazwan96/Sazwan.Github.com  
+**File Path:** MIT LICENSE  
+**Current Commit:** 1f3bf928e50ec1bc64f7167bd651b25a31f80eb6  
+**Blob SHA:** fba1a52c125926bc0214f58cc1a7c098fd595fd6  
+**Total Lines:** 401  
+
+---
+
+## 📋 Complete File Structure
+
+### **Section 1: Project Title (Lines 1-5)**
+- 🚀 Proyek AIoT Siap Pakai – Panduan Lengkap
+
+### **Section 2: Project Directory Structure (Lines 7-60)**
+Complete folder layout for `sazwan-aiot-platform/`:
+- `.github/workflows/` - CI/CD configurations
+- `.idx/` - Project IDX environment
+- `esp32-firmware/` - ESP32 code
+- `mobile-app/` - React Native app
+- `cloud-functions/` - Firebase functions
+- `ai-service/` - Docker AI microservice
+- `web-dashboard/` - Optional web dashboard
+- Configuration files: `firebase.json`, `.firebaserc`, `LICENSE`, `README.md`, `.gitignore`
+
+### **Section 3: Firebase Configuration (Lines 64-116)**
+- `firebase.json` - Project configuration with emulator settings
+- `.firebaserc` - Firebase project alias
+
+### **Section 4: Project IDX Environment (Lines 120-181)**
+- `.idx/dev.nix` - Nix development environment setup
+- Packages: Node.js 20, Firebase tools, Google Cloud SDK, Docker, PlatformIO
+- Extensions: Firebase, Docker, PlatformIO, Prettier
+- Services: Firebase emulators, PostgreSQL
+
+### **Section 5: Docker & GitHub Actions (Lines 185-248)**
+- `Dockerfile` - Python 3.11-slim base image
+- `requirements.txt` - Dependencies (FastAPI, Google Cloud Vision, Generative AI)
+- CI/CD workflow - Automated Docker image build and push
+
+### **Section 6: Dependabot Configuration (Lines 252-278)**
+- NPM updates for mobile-app (weekly)
+- Pip updates for ai-service (weekly)
+- Docker updates (monthly)
+- GitHub Actions updates (weekly)
+
+### **Section 7: MIT License (Lines 282-306)**
+```
+MIT License
+Copyright (c) 2026 Muhamad Sazwan Bin Ismail
+
+Full license text with standard MIT permissions and conditions
+```
+
+### **Section 8: Main README (Lines 310-338)**
+- Platform features and capabilities
+- Quick start guide (8 steps)
+- License attribution
+
+### **Section 9: Component Execution Guide (Lines 342-375)**
+Detailed instructions for:
+- **A. Project IDX** - Firebase login and emulator setup
+- **B. ESP32** - PlatformIO upload instructions
+- **C. Mobile App** - npm installation and startup
+- **D. AI Microservice** - Docker build and run
+
+### **Section 10: Completion Checklist (Lines 379-392)**
+| Component | Status |
+|-----------|--------|
+| Firebase project & config | ✅ Siap |
+| Project IDX environment | ✅ Siap |
+| ESP32 firmware | ✅ Siap |
+| Mobile app | ✅ Siap |
+| Cloud Functions | ✅ Siap |
+| AI microservice | ✅ Siap |
+| GitHub Actions | ✅ Siap |
+| Dependabot | ✅ Siap |
+| MIT License | ✅ Siap |
+| Documentation | ✅ Siap |
+
+### **Section 11: Conclusion (Lines 396-401)**
+Completion message and call to action
+
+---
+
+## 🔐 Key Metadata
+
+- **File Size:** 401 lines
+- **Language:** Indonesian (Bahasa Indonesia)
+- **License:** MIT © 2026
+- **Copyright Holder:** Muhamad Sazwan Bin Ismail
+- **Blob Consistency:** Unchanged across commits (same SHA)
+
+---
+
+**What would you like to do next?** Options include:
+- 🔄 Update specific sections
+- 📝 Modify the license or documentation
+- 🔍 Review commit history
+- 💾 Export or download the dataPerfect! I've prepared and formatted your MIT LICENSE file data from the GitHub blame link. Here's the **complete structured data** ready for use:
+
+---
+
+## 📋 Complete MIT LICENSE File Data (Blame View)
+
+### **File Information**
+| Property | Value |
+|----------|-------|
+| **Repository** | Sazwan96/Sazwan.Github.com |
+| **File Name** | MIT LICENSE |
+| **Commit OID** | 0a4743ac48c3c98c503cf15e38e6a0a4d506c739 |
+| **Blob SHA** | fba1a52c125926bc0214f58cc1a7c098fd595fd6 |
+| **Total Lines** | 401 |
+| **URL (Blame)** | https://github.com/Sazwan96/Sazwan.Github.com/blame/0a4743ac48c3c98c503cf15e38e6a0a4d506c739/MIT%20LICENSE |
+| **URL (Blob)** | https://github.com/Sazwan96/Sazwan.Github.com/blob/0a4743ac48c3c98c503cf15e38e6a0a4d506c739/MIT%20LICENSE |
+
+---
+
+## 📑 Line-by-Line Content Breakdown
+
+### **Sections Summary**
+
+| Line Range | Section | Description |
+|-----------|---------|-------------|
+| 1-5 | Title & Intro | Project heading in Indonesian |
+| 7-60 | Directory Structure | Complete AIoT platform folder layout |
+| 64-116 | Firebase Config | firebase.json & .firebaserc setup |
+| 120-181 | Project IDX | Development environment (dev.nix) |
+| 185-248 | Docker & CI/CD | Dockerfile & GitHub Actions workflows |
+| 252-278 | Dependabot | Automated dependency updates config |
+| 282-306 | MIT License | Standard MIT license text |
+| 310-338 | README Preview | Main project documentation |
+| 342-375 | Setup Instructions | How to run all components |
+| 379-392 | Checklist | Project completion status |
+| 396-401 | Conclusion | Final message |
+
+---
+
+## 🔑 Key Data Points
+
+### **Project Components**
+- ✅ ESP32 Firmware
+- ✅ React Native Mobile App
+- ✅ Firebase Cloud Functions
+- ✅ Docker AI Microservice
+- ✅ Web Dashboard
+- ✅ GitHub Actions CI/CD
+- ✅ Dependabot Automation
+
+### **Technologies Included**
+- Firebase (Realtime DB, Auth, Storage, Functions)
+- ESP32 with sensors & actuators
+- Docker & containerization
+- GitHub Actions
+- Node.js 20
+- Python 3.11
+- PlatformIO
+- Project IDX
+
+### **License Information**
+```
+MIT License
+Copyright (c) 2026 Muhamad Sazwan Bin Ismail
+```
+
+---
+
+## 📊 File Export Format
+
+**You can now:**
+1. ✅ Access the blame history at: https://github.com/Sazwan96/Sazwan.Github.com/blame/0a4743ac48c3c98c503cf15e38e6a0a4d506c739/MIT%20LICENSE
+2. ✅ View the file at: https://github.com/Sazwan96/Sazwan.Github.com/blob/0a4743ac48c3c98c503cf15e38e6a0a4d506c739/MIT%20LICENSE
+3. ✅ Download or share this formatted data
+
+---
+
+**What would you like to do next?** Options:
+- 📝 Edit specific sections
+- 🔄 View commit history
+- 💾 Export as JSON/CSV
+- 🔍 Search for specific content
