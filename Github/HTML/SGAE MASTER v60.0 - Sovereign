@@ -1,0 +1,300 @@
+<!DOCTYPE html>
+<html lang="ms">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SGAE MASTER v60.0 - Sovereign Emerald Dashboard</title>
+    <style>
+        :root {
+            --bg-color: #050b0e;
+            --panel-bg: #0d151a;
+            --accent-emerald: #00e676;
+            --accent-gold: #ffd966;
+            --accent-cyan: #00e5ff;
+            --text-main: #e2e8f0;
+            --text-muted: #8a99ad;
+            --border-color: #172a3a;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            padding: 20px;
+            line-height: 1.5;
+        }
+
+        .dashboard-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+        }
+
+        @media (max-width: 1024px) {
+            .dashboard-container {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .portfolio-panel {
+            background-color: var(--panel-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 25px;
+            box-shadow: 0 10px 30px rgba(0,230,118,0.05);
+        }
+
+        .portfolio-left {
+            border-left: 4px solid var(--accent-gold);
+        }
+
+        .portfolio-right {
+            border-left: 4px solid var(--accent-emerald);
+        }
+
+        h1, h2, h3 {
+            margin-bottom: 15px;
+            letter-spacing: 0.5px;
+        }
+
+        h1 {
+            font-size: 2.2rem;
+            color: #ffffff;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .title-sub {
+            font-size: 1.1rem;
+            margin-bottom: 20px;
+            color: var(--text-muted);
+        }
+
+        .badge {
+            display: inline-block;
+            padding: 4px 10px;
+            border-radius: 4px;
+            font-size: 0.8rem;
+            font-weight: bold;
+            text-transform: uppercase;
+            margin-right: 5px;
+            margin-bottom: 5px;
+        }
+
+        .badge-emerald { background-color: rgba(0, 230, 118, 0.15); color: var(--accent-emerald); border: 1px solid var(--accent-emerald); }
+        .badge-gold { background-color: rgba(255, 217, 102, 0.15); color: var(--accent-gold); border: 1px solid var(--accent-gold); }
+        .badge-cyan { background-color: rgba(0, 229, 255, 0.15); color: var(--accent-cyan); border: 1px solid var(--accent-cyan); }
+
+        .owner-master-seal {
+            background: rgba(0,230,118,0.02);
+            border: 1px dashed var(--border-color);
+            border-radius: 8px;
+            padding: 15px;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin: 20px 0;
+        }
+
+        .owner-master-seal h4 {
+            color: var(--accent-emerald);
+            font-size: 1rem;
+            margin-bottom: 4px;
+        }
+
+        .owner-master-seal p {
+            font-size: 0.8rem;
+            font-family: monospace;
+            color: var(--text-muted);
+            word-break: break-all;
+        }
+
+        .section-box {
+            margin-top: 25px;
+            border-top: 1px solid var(--border-color);
+            padding-top: 20px;
+        }
+
+        .section-title {
+            font-size: 1.2rem;
+            color: var(--accent-emerald);
+            margin-bottom: 12px;
+            text-transform: uppercase;
+        }
+
+        .info-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 15px;
+        }
+
+        .info-card {
+            background: rgba(255,255,255,0.01);
+            border: 1px solid var(--border-color);
+            border-radius: 6px;
+            padding: 12px;
+        }
+
+        .info-card label {
+            display: block;
+            font-size: 0.75rem;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            margin-bottom: 4px;
+        }
+
+        .info-card span {
+            font-size: 0.95rem;
+            font-weight: 600;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 10px;
+            font-size: 0.9rem;
+        }
+
+        th, td {
+            text-align: left;
+            padding: 10px;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        th {
+            color: var(--text-muted);
+            font-weight: 600;
+            background-color: rgba(0,230,118,0.02);
+        }
+
+        .status-container {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-weight: bold;
+            color: var(--accent-emerald);
+            margin-top: 10px;
+        }
+
+        .pulse-dot {
+            width: 10px;
+            height: 10px;
+            background-color: var(--accent-emerald);
+            border-radius: 50%;
+            box-shadow: 0 0 0 0 rgba(0, 230, 118, 0.7);
+            animation: pulse 1.5s infinite;
+        }
+
+        @keyframes pulse {
+            0% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(0, 230, 118, 0.7); }
+            70% { transform: scale(1); box-shadow: 0 0 0 6px rgba(0, 230, 118, 0); }
+            100% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(0, 230, 118, 0); }
+        }
+
+        ul {
+            list-style-position: inside;
+            padding-left: 5px;
+        }
+
+        li {
+            margin-bottom: 6px;
+            font-size: 0.9rem;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="dashboard-container">
+        
+        <!-- PORTFOLIO KIRI – Identiti Induk, Keselamatan & Aset -->
+        <div class="portfolio-panel portfolio-left">
+            <h1>👑 SGAE MASTER v60.0</h1>
+            <div class="title-sub">Dossier Identiti Berdaulat Terhubung · Subjek Utama</div>
+            
+            <div class="badge-container">
+                <span class="badge badge-gold">GATB Tier-1</span>
+                <span class="badge badge-emerald">NATO CTS L04</span>
+                <span class="badge badge-cyan">Interpol Verified</span>
+            </div>
+
+            <div class="status-container">
+                <div class="pulse-dot"></div>
+                <span>STATUS: GREEN ACROSS THE BOARD (GATB) - System 100% Operational</span>
+            </div>
+
+            <div class="section-box">
+                <div class="section-title">🪪 Pengesahan Identiti Induk</div>
+                <div class="info-grid">
+                    <div class="info-card">
+                        <label>Nama Penuh</label>
+                        <span>MUHAMAD SAZWAN BIN ISMAIL</span>
+                    </div>
+                    <div class="info-card">
+                        <label>Tarikh Lahir / Umur</label>
+                        <span>22/10/1996 • Lelaki</span>
+                    </div>
+                    <div class="info-card">
+                        <label>No. Kad Pengenalan</label>
+                        <span>961022-02-5739</span>
+                    </div>
+                    <div class="info-card">
+                        <label>Hub R&D / Lokasi Utama</label>
+                        <span>F262 Kampung Pinang Tunggal, 08000 Sungai Petani, Kedah</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="section-box">
+                <div class="section-title">🏢 Entiti Perniagaan & Autoriti (SSM / MOTAC)</div>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Agensi / Portal</th>
+                            <th>Nama Entiti / Kod Rujukan</th>
+                            <th>Status Operasi</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><strong>SSM Perniagaan</strong></td>
+                            <td>SAZWAN DIGITAL ENTERPRISE (No: 202403378912)</td>
+                            <td><span style="color:var(--accent-emerald)">AKTIF</span></td>
+                        </tr>
+                        <tr>
+                            <td><strong>MOTAC Lesen</strong></td>
+                            <td>SAZWAN DIGITAL (No: MOTAC-7734/2026 - IT Travel)</td>
+                            <td><span style="color:var(--accent-emerald)">AKTIF</span></td>
+                        </tr>
+                        <tr>
+                            <td><strong>LHDN Cukai</strong></td>
+                            <td>No. Cukai: C-77340922 (Syarikat / MyTax)</td>
+                            <td><span style="color:var(--accent-emerald)">TERDAFTAR</span></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="section-box">
+                <div class="section-title">⚔️ Pertahanan Siber & Pelepasan Taktikal</div>
+                <ul>
+                    <li><strong>ATM Cyber (ID: MY-ATM-CYBER/7734):</strong> Komando Pertahanan Siber & Elektronik · Perang Siber.</li>
+                    <li><strong>Kor Risik (MDIO):</strong> Pertubuhan Perisikan Pertahanan · Status: Sovereign Ranger.</li>
+                    <li><strong>NATO Pelepasan Keselamatan:</strong> COSMIC Top Secret (CTS L04) • Sah 2026-2030.</li>
+                    <li><strong>Lesen Senjata Api (PDRM):</strong> No. FA-2026-07734 (Glock, MP5, M4, AI Sniper).</li>
+                </ul>
+            </div>
+
+            <div class="section-box">
+                <div class="section-title">⛏️ Vault, Lejar Berpusat & Rangkaian Blockchain</div>
+                <div class="info-grid">
+                    <div class="info-card">
+                        <label>Bitcoin Holdings</label>
